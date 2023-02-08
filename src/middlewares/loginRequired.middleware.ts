@@ -7,7 +7,7 @@ export const loginRequired: RequestHandler = async ( req, res, next ) => {
     const { authorization } = req.headers;
 
     if( !authorization ){ 
-        throw new UnauthorizedError('Login Required')
+        throw new UnauthorizedError('O login é requerido')
     }
 
     const token = authorization.split(' ')[1];
@@ -23,7 +23,7 @@ export const loginRequired: RequestHandler = async ( req, res, next ) => {
         }
 
         return next();
-    } catch (error) {
+    } catch (error: any) {
         return res.status(401).json( { error: error.message } )
     }
 }
