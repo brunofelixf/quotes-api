@@ -1,3 +1,4 @@
+import { BadRequestError } from './../../errors/errorApp';
 import { prisma } from '../../server';
 import { ICreateUser } from './../../interfaces/user.d';
 import { hashSync } from 'bcryptjs'
@@ -10,7 +11,7 @@ const createUserService = async ({
 
     const alreadyExists = await prisma.user.findUnique({ where: { email } })
     
-    if( alreadyExists ){ throw new Error( 'Usuário já existe' ) }
+    if( alreadyExists ){ throw new BadRequestError( 'Usuário já existe' ) }
 
     const user = await prisma.user.create({
         data: {
@@ -25,7 +26,9 @@ const createUserService = async ({
         }
      })
 
-     if( !user ){ throw new Error( 'Usuário não criado' ) }
+     if( !user ){
+        throw new BadRequestError('Não foi possível criar o usuário')
+     }
 
      return user
 }
