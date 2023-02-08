@@ -1,5 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -8,4 +6,49 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+
+  user_id     String    @id @default(uuid())
+  name        String    @db.VarChar(100)
+  email       String    @db.VarChar(100)
+  password    String    @db.VarChar(120)
+  status      Status    @default(ACTIVE)
+  quotes      Quotes[]
+  liked       Like[]
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  
+  @@map("user")
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+model Quotes {
+
+  quotes_id   String    @id
+  text        String    @unique
+  likes       Like[]
+  user        User      @relation(fields: [user_id], references: [user_id])
+  user_id     String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@map("quotes")
+}
+
+model Like {
+
+  user        User      @relation(fields: [user_id], references: [user_id])
+  user_id     String    @unique
+  quotes      Quotes    @relation(fields: [quotes_id], references: [quotes_id])
+  quotes_id   String    
+
+  @@id([user_id, quotes_id])
+  @@map("like")
 }
