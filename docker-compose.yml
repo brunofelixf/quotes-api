@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+
+  quotes:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${USER} 
+      POSTGRES_PASSWORD: ${PASSWORD}
+      POSTGRES_DB: ${DB}
+    ports:
+      - "5432:5432"
+
+  test:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${USER2} 
+      POSTGRES_PASSWORD: ${PASSWORD2}
+      POSTGRES_DB: ${DB2}
+    ports:
+      - "5433:5432"
