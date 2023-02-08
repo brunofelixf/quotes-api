@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AnySchema, ValidationError } from 'yup';
 
-const validatorDataMiddleware = (schema: AnySchema) =>
+const validatorData = (schema: AnySchema) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = req.body;
@@ -21,4 +21,4 @@ const validatorDataMiddleware = (schema: AnySchema) =>
       return res.status(400).json({ message: errors });
     }
   };
-export { validatorDataMiddleware };
+export { validatorData };
