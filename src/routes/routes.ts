@@ -8,6 +8,8 @@ import { loginUserSchema } from "../validations/user/loginUser.schema"
 import { listUserController } from '../controllers/user/listUser.controller';
 import { updateUserController } from '../controllers/user/updateUser.controller';
 import { deleteUserController } from '../controllers/user/deleteUser.controller';
+import { createQuoteSchema } from '../validations/quote/createQuote.schema';
+import { createQuoteController } from '../controllers/quote/createQuote.controller';
 
 const routerApp = Router()
 
@@ -17,8 +19,11 @@ routerApp.get('/user', loginRequired, listUserController)
 routerApp.patch('/user', loginRequired, updateUserController)
 routerApp.delete('/user', loginRequired, deleteUserController)
 
-
+// Login
 routerApp.post('/login', validatorData( loginUserSchema ), authenticateUserController)
+
+// Quote
+routerApp.post('/quote', loginRequired, validatorData( createQuoteSchema ), createQuoteController)
 
 
 export { routerApp }

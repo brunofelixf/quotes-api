@@ -15,7 +15,7 @@ model User {
   email       String    @db.VarChar(100) @unique
   password    String    @db.VarChar(120)
   status      Status    @default(ACTIVE)
-  quotes      Quotes[]
+  quotes      Quote[]
   liked       Like[]
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
@@ -29,26 +29,26 @@ enum Status {
   INACTIVE
 }
 
-model Quotes {
+model Quote {
 
-  quotes_id   String    @id
-  text        String    @unique
+  quote_id    String    @id @default(uuid())
+  text        String    @db.VarChar(300) 
   likes       Like[]
   user        User      @relation(fields: [user_id], references: [user_id])
   user_id     String
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
 
-  @@map("quotes")
+  @@map("quote")
 }
 
 model Like {
 
   user        User      @relation(fields: [user_id], references: [user_id])
   user_id     String    @unique
-  quotes      Quotes    @relation(fields: [quotes_id], references: [quotes_id])
-  quotes_id   String    
+  quote       Quote     @relation(fields: [quote_id], references: [quote_id])
+  quote_id    String    
 
-  @@id([user_id, quotes_id])
+  @@id([user_id, quote_id])
   @@map("like")
 }

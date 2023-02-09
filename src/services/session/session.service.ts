@@ -27,7 +27,7 @@ const authenticateUserService =
             name: user.name,
             user_id: user.user_id
         },
-            process.env.KEY_TOKEN,
+            process.env.KEY_TOKEN as string,
         {
             expiresIn: "12h"
         }
