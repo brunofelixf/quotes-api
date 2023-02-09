@@ -7,6 +7,7 @@ import { createUserSchema } from "../validations/user/createUser.schema"
 import { loginUserSchema } from "../validations/user/loginUser.schema"
 import { listUserController } from '../controllers/user/listUser.controller';
 import { updateUserController } from '../controllers/user/updateUser.controller';
+import { deleteUserController } from '../controllers/user/deleteUser.controller';
 
 const routerApp = Router()
 
@@ -14,6 +15,7 @@ const routerApp = Router()
 routerApp.post('/user', validatorData( createUserSchema ), createUserController)
 routerApp.get('/user', loginRequired, listUserController)
 routerApp.patch('/user', loginRequired, updateUserController)
+routerApp.delete('/user', loginRequired, deleteUserController)
 
 
 routerApp.post('/login', validatorData( loginUserSchema ), authenticateUserController)

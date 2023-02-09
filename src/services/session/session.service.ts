@@ -12,10 +12,14 @@ const authenticateUserService =
         .findUniqueOrThrow({ where: {email} })
         .catch( () => { throw new NotFoundError('Usuário não encontrado')})
     
+    if( user.status === 'INACTIVE' ){
+        throw new UnauthorizedError('Usuário desativado')
+    }
+    
     const passwordIsCorrect = await compare( password, user.password );    
 
     if( !passwordIsCorrect ){
-        throw new UnauthorizedError('Username ou Senha inválidos')
+        throw new UnauthorizedError('Email ou Senha inválidos')
     }
 
     const token = sign(

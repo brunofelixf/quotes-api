@@ -30,11 +30,11 @@ const updateUserService = async (
         },
         select: {
             user_id: true,
-                name: true,
-                email: true,
-                status: true,
-                created_at: true,
-                updated_at: true
+            name: true,
+            email: true,
+            status: true,
+            created_at: true,
+            updated_at: true
         }
     })
     
