@@ -4,7 +4,6 @@ export interface ICreateQuote {
 }
 
 export interface IUpdateQuote {
-    user_id: string;
     text?: string;
 }
 
