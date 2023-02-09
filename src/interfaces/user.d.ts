@@ -11,5 +11,10 @@ export interface IDecodedUser {
     name: string;
     user_id: string;
 }
+export interface IUpdateUser {
+    name?: string;
+    email?: string;
+    password?: string;
+}
 
 
