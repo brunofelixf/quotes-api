@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { listQuoteService } from "../../validations/quote/listQuote.service"
+import { listQuoteService } from "../../services/quote/listQuote.service"
 
 
 const listQuoteController = async (req: Request, res: Response) => {
