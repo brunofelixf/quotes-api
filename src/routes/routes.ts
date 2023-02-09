@@ -10,6 +10,7 @@ import { updateUserController } from '../controllers/user/updateUser.controller'
 import { deleteUserController } from '../controllers/user/deleteUser.controller';
 import { createQuoteSchema } from '../validations/quote/createQuote.schema';
 import { createQuoteController } from '../controllers/quote/createQuote.controller';
+import { listQuoteController } from '../controllers/quote/listQuote.controller';
 
 const routerApp = Router()
 
@@ -24,6 +25,7 @@ routerApp.post('/login', validatorData( loginUserSchema ), authenticateUserContr
 
 // Quote
 routerApp.post('/quote', loginRequired, validatorData( createQuoteSchema ), createQuoteController)
+routerApp.get('/quote', loginRequired, listQuoteController)
 
 
 export { routerApp }
