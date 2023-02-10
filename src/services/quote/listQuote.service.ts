@@ -1,10 +1,15 @@
+import { IPagination } from './../../interfaces/pagination.d';
 import { NotFoundError } from "../../errors/errorApp"
 import { prisma } from "../../server"
 
 
-const listQuoteService = async ( user_id: string | undefined ) => {
+const listQuoteService = async ( 
+    user_id: string | undefined,
+    { skip, take }: IPagination ) => {
     const quotes = await prisma.quote
         .findMany({
+            skip,
+            take,
             where: { user_id },
             select: {
                 quote_id: true,
