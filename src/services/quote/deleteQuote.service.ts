@@ -1,13 +1,18 @@
+import { UnauthorizedError } from './../../errors/errorApp';
 import { NotFoundError, BadRequestError } from '../../errors/errorApp';
 import { prisma } from "../../server"
 
-const deleteQuoteService = async ( quote_id: string ) => {
+const deleteQuoteService = async ( user_id: string, quote_id: string ) => {
 
-    await prisma.quote
+    const quote = await prisma.quote
         .findUniqueOrThrow({ where: { quote_id }})
         .catch( ()=>{ 
             throw new NotFoundError('Citação não encontrada')
         })
+    
+    if( quote.user_id !== user_id ){
+        throw new UnauthorizedError('Você não tem autorização para deletar essa citação')
+    }
     
     await prisma.quote
         .delete({

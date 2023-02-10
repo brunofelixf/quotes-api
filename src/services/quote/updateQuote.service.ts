@@ -7,20 +7,15 @@ const updateQuoteService = async (
     quote_id: string,
     { text }: IUpdateQuote ) => {
 
-    const user = await prisma.user
-        .findUnique({ where: { user_id }})
-    
-    if( !user ){
-        throw new NotFoundError('Usuário não encontrado') }  
-    if( user.user_id !== user_id ){
-        throw new UnauthorizedError('Você não tem autorização para alterar essa citação')
-    }
-
     const quote = await prisma.quote
         .findUnique({ where: { quote_id }})
     
     if( !quote ){
-        throw new NotFoundError('Citação não encontrada') }  
+        throw new NotFoundError('Citação não encontrada') }
+    
+    if( quote.user_id !== user_id ){
+        throw new UnauthorizedError('Você não tem autorização para alterar essa citação')
+    }
 
     const quoteUpdated = await prisma.quote
         .update({

@@ -3,8 +3,9 @@ import { deleteQuoteService } from "../../services/quote/deleteQuote.service";
 
 const deleteQuoteController: RequestHandler = async (req, res) => {
     const { quote_id } = req.params;
+    const { user_id } = req.user;
 
-    await deleteQuoteService( quote_id )
+    await deleteQuoteService( user_id, quote_id )
     return res.status(204).send()
 }
 
