@@ -21,7 +21,7 @@ const updateQuoteService = async (
         .update({
             where: { quote_id },
             data:{
-                text: text ?? quote.text
+                text
             },
             select: {
                 quote_id: true,

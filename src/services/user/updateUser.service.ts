@@ -24,9 +24,9 @@ const updateUserService = async (
     .update({
         where: { user_id: user.user_id },
         data:{
-            name: name ?? user.name,
-            email: email ?? user.email,
-            password: password ?? user.password,
+            name,
+            email,
+            password,
         },
         select: {
             user_id: true,
