@@ -33,7 +33,7 @@ describe('Criar Usuário | Route', () => {
         .expect(400)
     })
     
-    it('Não deve criar um usuário existente e deve retornar status 400', async () => {
+    it('Não deve criar um usuário existente e deve retornar retornar status 400', async () => {
         await request(server)
         .post('/user')
         .send( data )
@@ -42,21 +42,15 @@ describe('Criar Usuário | Route', () => {
 });
 
 describe('Listar dados do usuário | Route', () => {
-    it('Deve retornar erro se não estiver logado e status 401', async () => {
+
+    it('Deve retornar erro se não estiver logado e retornar status 401', async () => {
         const response = await request(server)
         .get('/user')
         .expect(401)
         expect( response.body ).toEqual({"error": "O login é requerido"})
     })
-});
 
-describe('Listar dados do usuário | Route', () => {
-    
-    afterAll( async () => {
-        await prisma.user.delete({ where: { email: 'test@email.com' }})
-    })
-
-    it('Deve retornar dados da conta logada e status 200', async () => {
+    it('Deve retornar dados da conta logada e retornar status 200', async () => {
         const data = {
             email: "test@email.com",
             password: "123"
@@ -70,5 +64,36 @@ describe('Listar dados do usuário | Route', () => {
         .set({ Authorization: `Bearer ${response.body.token}`})
         .expect(200)
         expect( user.body[0] ).toHaveProperty( 'user_id') 
+    })
+});
+
+describe('Atualizar dados do usuário | Route', () => {
+
+    afterAll( async () => {
+        await prisma.user.delete({ where: { email: 'test@email.com' }})
+    })
+    
+    it('Deve retornar erro se não estiver logado e retornar status 401', async () => {
+        const response = await request(server)
+        .patch('/user')
+        .expect(401)
+        expect( response.body ).toEqual({"error": "O login é requerido"})
+    })
+
+    it('Deve atualizar dados da conta logada e retornar status 200', async () => {
+        const data = {
+            email: "test@email.com",
+            password: "123"
+        }
+        const response = await request(server)
+        .post('/login')
+        .send( data )
+
+        const user = await request(server)
+        .patch('/user')
+        .send( { name: "Usuário Teste Atualizado" } )
+        .set({ Authorization: `Bearer ${response.body.token}`})
+        .expect(200)
+        expect( user.body.name ).toBe( "Usuário Teste Atualizado" ) 
     })
 });
