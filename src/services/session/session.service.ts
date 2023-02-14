@@ -1,9 +1,9 @@
+import { prisma } from './../../prisma';
 import { User } from '@prisma/client';
 import { UnauthorizedError } from './../../errors/errorApp';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { NotFoundError } from '../../errors/errorApp';
-import { prisma } from './../../server';
 
 
 const authenticateUserService =

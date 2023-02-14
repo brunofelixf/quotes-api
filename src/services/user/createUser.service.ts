@@ -1,5 +1,5 @@
+import { prisma } from './../../prisma';
 import { BadRequestError } from './../../errors/errorApp';
-import { prisma } from '../../server';
 import { ICreateUser } from './../../interfaces/user.d';
 import { hashSync } from 'bcryptjs'
 

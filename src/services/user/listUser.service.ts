@@ -1,5 +1,5 @@
+import { prisma } from './../../prisma';
 import { NotFoundError } from "../../errors/errorApp"
-import { prisma } from "../../server"
 
 
 const listUserService = async ( user_id: string | undefined ) => {

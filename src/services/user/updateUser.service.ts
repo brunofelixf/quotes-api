@@ -1,5 +1,5 @@
+import { prisma } from './../../prisma';
 import { IUpdateUser } from './../../interfaces/user.d';
-import { prisma } from "../../server"
 import { hashSync } from 'bcryptjs'
 import { NotFoundError, UnauthorizedError } from "../../errors/errorApp"
 

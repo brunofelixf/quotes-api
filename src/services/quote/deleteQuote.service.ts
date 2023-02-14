@@ -1,6 +1,6 @@
+import { prisma } from './../../prisma';
 import { UnauthorizedError } from './../../errors/errorApp';
 import { NotFoundError, BadRequestError } from '../../errors/errorApp';
-import { prisma } from "../../server"
 
 const deleteQuoteService = async ( user_id: string, quote_id: string ) => {
 

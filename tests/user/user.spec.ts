@@ -1,16 +1,12 @@
-import { prisma } from '../../src/server';
 import request  from "supertest";
-import { server } from "../../src/server";
 import { Response } from 'superagent';
+import { app } from '../../src/app';
+import { prisma } from "../../src/prisma";
 
 describe('Criar Usuário | Route', () => {
 
-    beforeEach( () => {
-        server
-    })
-    
-    afterEach( () => {
-        server.close();
+    afterAll( async()=> {
+        await prisma.$disconnect()
     })
     
     const data = {
@@ -20,14 +16,14 @@ describe('Criar Usuário | Route', () => {
     }
 
     it('Não deve criar um usuário se body estiver vazio e deve retornar status 400', async () => {
-        await request(server)
+        await request(app)
         .post('/user')
         .send( {} )
         .expect(400)
     })
     
     it('Não deve criar um usuário se faltar atributos e deve retornar status 400', async () => {
-        const response = await request(server)
+        const response = await request(app)
         .post('/user')
         .send( { name: 'teste', password: 123 } )
         .expect(400)
@@ -35,7 +31,7 @@ describe('Criar Usuário | Route', () => {
     })
 
     it('Deve criar um usuário e retornar status 201', async () => {
-        const response = await request(server)
+        const response = await request(app)
         .post('/user')
         .send( data )
         .expect(201)
@@ -43,7 +39,7 @@ describe('Criar Usuário | Route', () => {
     })    
     
     it('Não deve criar um usuário existente e deve retornar retornar status 400', async () => {
-        await request(server)
+        await request(app)
         .post('/user')
         .send( data )
         .expect(400)
@@ -60,21 +56,24 @@ describe('Listar dados do usuário | Route', () => {
     let login: Response
 
     beforeAll( async () => { 
-        login = await request(server)
+        login = await request(app)
         .post('/login')
         .send( data ) 
     })
 
+    afterAll( async()=> {
+        await prisma.$disconnect()
+    })
+
     it('Deve retornar erro se não estiver logado e retornar status 401', async () => {
-        const response = await request(server)
+        const response = await request(app)
         .get('/user')
         .expect(401)
         expect( response.body ).toEqual({"error": "O login é requerido"})
     })
 
     it('Deve retornar dados da conta logada e retornar status 200', async () => {
-
-        const user = await request(server)
+        const user = await request(app)
         .get('/user')
         .set({ Authorization: `Bearer ${login.body.token}`})
         .expect(200)
@@ -92,20 +91,24 @@ describe('Atualizar dados do usuário | Route', () => {
     let login: Response
 
     beforeAll( async () => { 
-        login = await request(server)
+        login = await request(app)
         .post('/login')
         .send( data ) 
     })
+
+    afterAll( async()=> {
+        await prisma.$disconnect()
+    })
     
     it('Deve retornar erro se não estiver logado e retornar status 401', async () => {
-        const response = await request(server)
+        const response = await request(app)
         .patch('/user')
         .expect(401)
         expect( response.body ).toEqual({"error": "O login é requerido"})
     })
 
     it('Deve atualizar dados da conta logada e retornar status 200', async () => {
-        const user = await request(server)
+        const user = await request(app)
         .patch('/user')
         .send( { name: "Usuário Teste Atualizado" } )
         .set({ Authorization: `Bearer ${login.body.token}`})
@@ -123,24 +126,25 @@ describe('Deletar dados do usuário | Route', () => {
     let login: Response
 
     beforeAll( async () => { 
-        login = await request(server)
+        login = await request(app)
         .post('/login')
         .send( data ) 
     })
     
     afterAll( async () => {
         await prisma.user.delete({ where: { email: 'test@email.com' }})
+        await prisma.$disconnect()
     })
 
     it('Deve retornar erro se não estiver logado e retornar status 401', async () => {
-        const response = await request(server)
+        const response = await request(app)
         .delete('/user')
         .expect(401)
         expect( response.body ).toEqual({"error": "O login é requerido"})
     })
     
     it('Deve deletar dados da conta logada e retornar status 204', async () => {
-        await request(server)
+        await request(app)
         .delete('/user')
         .set({ Authorization: `Bearer ${login.body.token}`})
         .expect(204)

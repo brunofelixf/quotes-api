@@ -1,6 +1,6 @@
+import { prisma } from './../../prisma';
 import { IPagination } from './../../interfaces/pagination.d';
 import { NotFoundError } from "../../errors/errorApp"
-import { prisma } from "../../server"
 
 
 const listAllQuotesService = async ( {skip, take}: IPagination) => {

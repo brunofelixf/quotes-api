@@ -1,6 +1,6 @@
+import { prisma } from './../../prisma';
 import { ICreateQuote } from './../../interfaces/quote.d';
 import { BadRequestError } from '../../errors/errorApp';
-import { prisma } from '../../server';
 
 const createQuoteService = async ({ user_id, text }: ICreateQuote ) => {
 

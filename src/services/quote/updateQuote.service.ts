@@ -1,5 +1,5 @@
+import { prisma } from './../../prisma';
 import { IUpdateQuote } from './../../interfaces/quote.d';
-import { prisma } from "../../server"
 import { NotFoundError, UnauthorizedError } from "../../errors/errorApp"
 
 const updateQuoteService = async ( 

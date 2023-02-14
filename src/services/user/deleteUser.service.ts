@@ -1,5 +1,5 @@
+import { prisma } from './../../prisma';
 import { NotFoundError, BadRequestError } from './../../errors/errorApp';
-import { prisma } from "../../server"
 
 const deleteUserService = async ( user_id: string ) => {
 

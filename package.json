@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev --files --transpile-only --respawn --inspect=4321 --project tsconfig.json src/server.ts",
-    "test": "cross-env NODE_ENV=test jest --verbose",
+    "test": "cross-env NODE_ENV=test jest --verbose --silent --noStackTrace",
+    "test:log": "cross-env NODE_ENV=test jest --verbose",
     "build": "tsc --build",
     "clean": "tsc --build --clean"
   },
