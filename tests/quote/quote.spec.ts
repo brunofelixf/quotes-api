@@ -139,6 +139,13 @@ describe('Deletar citação | Route', () => {
         .expect(401)
     })
 
+    it('Deve lançar erro se a citação não existir e retornar status 404', async () => {
+        await request(app)
+        .delete(`/quote/123`)
+        .set({ Authorization: `Bearer ${login.body.token}`})
+        .expect(404)
+    })
+
     it('Deve deletar citação e retornar status 204', async () => {
         await request(app)
         .delete(`/quote/${quote.body.quote_id}`)
