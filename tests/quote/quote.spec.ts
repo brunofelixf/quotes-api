@@ -4,7 +4,7 @@ import { Response } from 'superagent';
 import { app } from '../../src/app';
 
 let login: Response
-let quote: { quote_id: any; }
+let quote: any
 
 describe('Criar Citação | Route', () => {
 
@@ -82,7 +82,32 @@ describe('Listar citação | Route', () => {
         .get('/quote')
         .set({ Authorization: `Bearer ${login.body.token}`})
         .expect(404)
+    })
+});
+describe('Atualizar citação | Route', () => {
+    
+    it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
 
+        quote = await request(app)
+        .post('/quote')
+        .set({ Authorization: `Bearer ${login.body.token}`})
+        .send( { text: 'Texto da citação teste'} )
+
+        const response = await request(app)
+        .patch(`/quote/${quote.body.quote_id}`)
+        .expect(401)
+        expect( response.body ).toEqual({"error": "O login é requerido"})
+    })
+
+    it('Deve atualizar dados da citação e retornar status 200', async () => {
+        const quoteUpdated = await request(app)
+        .patch(`/quote/${quote.body.quote_id}`)
+        .send( { text: "Usuário Teste Atualizado" } )
+        .set({ Authorization: `Bearer ${login.body.token}`})
+        .expect(200)
+        expect( quoteUpdated.body.text ).toBe( "Usuário Teste Atualizado" ) 
+        
+        await prisma.quote.delete({ where: { quote_id: quote.body.quote_id }})
         await prisma.user.delete({ where: { email: "test@email2.com" }})
         await prisma.$disconnect()
     })

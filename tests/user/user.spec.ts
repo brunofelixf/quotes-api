@@ -3,6 +3,13 @@ import { Response } from 'superagent';
 import { app } from '../../src/app';
 import { prisma } from "../../src/prisma";
 
+const data = {
+    email: "test@email.com",
+    password: "123"
+}
+
+let login: Response
+
 describe('Criar Usuário | Route', () => {
 
     afterAll( async()=> {
@@ -48,21 +55,10 @@ describe('Criar Usuário | Route', () => {
 
 describe('Listar dados do usuário | Route', () => {
 
-    const data = {
-        email: "test@email.com",
-        password: "123"
-    }
-
-    let login: Response
-
     beforeAll( async () => { 
         login = await request(app)
         .post('/login')
         .send( data ) 
-    })
-
-    afterAll( async()=> {
-        await prisma.$disconnect()
     })
 
     it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
@@ -83,19 +79,6 @@ describe('Listar dados do usuário | Route', () => {
 });
 
 describe('Atualizar dados do usuário | Route', () => {
-
-    const data = {
-        email: "test@email.com",
-        password: "123"
-    }
-
-    let login: Response
-
-    beforeAll( async () => { 
-        login = await request(app)
-        .post('/login')
-        .send( data ) 
-    })
     
     it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
         const response = await request(app)
@@ -115,19 +98,6 @@ describe('Atualizar dados do usuário | Route', () => {
 });
 describe('Deletar dados do usuário | Route', () => {
 
-    const data = {
-        email: "test@email.com",
-        password: "123"
-    }
-
-    let login: Response
-
-    beforeAll( async () => { 
-        login = await request(app)
-        .post('/login')
-        .send( data ) 
-    })
-
     it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
         const response = await request(app)
         .delete('/user')
@@ -144,6 +114,5 @@ describe('Deletar dados do usuário | Route', () => {
         await prisma.user.delete({ where: { email: "test@email.com" }})
         await prisma.$disconnect()
     })
-    
 });
 
