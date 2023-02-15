@@ -84,6 +84,7 @@ describe('Listar citação | Route', () => {
         .expect(404)
     })
 });
+
 describe('Atualizar citação | Route', () => {
     
     it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
@@ -106,9 +107,46 @@ describe('Atualizar citação | Route', () => {
         .set({ Authorization: `Bearer ${login.body.token}`})
         .expect(200)
         expect( quoteUpdated.body.text ).toBe( "Usuário Teste Atualizado" ) 
+    })
+});
+
+describe('Deletar citação | Route', () => {
+
+    it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
+        const response = await request(app)
+        .delete(`/quote/${quote.body.quote_id}`)
+        .expect(401)
+        expect( response.body ).toEqual({"error": "O login é requerido"})
+    })
+    
+    it('Deve lançar erro se a citação não pertencer ao usuário logado e retornar status 401', async () => {
+
+        await request(app)
+        .post('/user')
+        .send({
+            name: "Usuário Teste 3",
+            email: "test@email3.com",
+            password: "123"
+        })
         
-        await prisma.quote.delete({ where: { quote_id: quote.body.quote_id }})
+        const login2 = await request(app)
+        .post('/login')
+        .send( {email: "test@email3.com", password: "123"} )
+
+        await request(app)
+        .delete(`/quote/${quote.body.quote_id}`)
+        .set({ Authorization: `Bearer ${login2.body.token}`})
+        .expect(401)
+    })
+
+    it('Deve deletar citação e retornar status 204', async () => {
+        await request(app)
+        .delete(`/quote/${quote.body.quote_id}`)
+        .set({ Authorization: `Bearer ${login.body.token}`})
+        .expect(204)
+
         await prisma.user.delete({ where: { email: "test@email2.com" }})
+        await prisma.user.delete({ where: { email: "test@email3.com" }})
         await prisma.$disconnect()
     })
 });
