@@ -65,14 +65,15 @@ describe('Listar dados do usuário | Route', () => {
         await prisma.$disconnect()
     })
 
-    it('Deve retornar erro se não estiver logado e retornar status 401', async () => {
+    it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
         const response = await request(app)
         .get('/user')
         .expect(401)
         expect( response.body ).toEqual({"error": "O login é requerido"})
     })
 
-    it('Deve retornar dados da conta logada e retornar status 200', async () => {
+    it('Deve lançar dados da conta logada e retornar status 200', async () => {
+
         const user = await request(app)
         .get('/user')
         .set({ Authorization: `Bearer ${login.body.token}`})
@@ -95,12 +96,8 @@ describe('Atualizar dados do usuário | Route', () => {
         .post('/login')
         .send( data ) 
     })
-
-    afterAll( async()=> {
-        await prisma.$disconnect()
-    })
     
-    it('Deve retornar erro se não estiver logado e retornar status 401', async () => {
+    it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
         const response = await request(app)
         .patch('/user')
         .expect(401)
@@ -130,13 +127,8 @@ describe('Deletar dados do usuário | Route', () => {
         .post('/login')
         .send( data ) 
     })
-    
-    afterAll( async () => {
-        await prisma.user.delete({ where: { email: 'test@email.com' }})
-        await prisma.$disconnect()
-    })
 
-    it('Deve retornar erro se não estiver logado e retornar status 401', async () => {
+    it('Deve lançar erro se não estiver logado e retornar status 401', async () => {
         const response = await request(app)
         .delete('/user')
         .expect(401)
@@ -148,6 +140,9 @@ describe('Deletar dados do usuário | Route', () => {
         .delete('/user')
         .set({ Authorization: `Bearer ${login.body.token}`})
         .expect(204)
+
+        await prisma.user.delete({ where: { email: "test@email.com" }})
+        await prisma.$disconnect()
     })
     
 });
