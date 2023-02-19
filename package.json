@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev --files --transpile-only --respawn --inspect=4321 --project tsconfig.json src/server.ts",
     "test": "cross-env NODE_ENV=test jest --verbose --silent --noStackTrace",
     "test:log": "cross-env NODE_ENV=test jest --verbose",
-    "build": "tsc --build",
+    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "clean": "tsc --build --clean"
   },
   "repository": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/brunofelixf/quotes-api#readme",
   "dependencies": {
-    "@prisma/client": "^4.10.0",
+    "@prisma/client": "^4.10.1",
     "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
@@ -29,12 +29,20 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/node": "^7.20.7",
+    "@babel/plugin-proposal-decorators": "^7.20.13",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.4.0",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.13.0",
     "@types/supertest": "^2.0.12",
+    "babel-loader": "^9.1.2",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "cross-env": "^7.0.3",
     "jest": "^29.4.2",
     "supertest": "^6.3.3",
