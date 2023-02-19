@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.quoteRouter = void 0;
+const loginRequired_middleware_1 = require("../../middlewares/loginRequired.middleware");
+const validatorData_middleware_1 = require("../../middlewares/validatorData.middleware");
+const createQuote_schema_1 = require("../../validations/quote/createQuote.schema");
+const createQuote_controller_1 = require("../../controllers/quote/createQuote.controller");
+const listQuote_controller_1 = require("../../controllers/quote/listQuote.controller");
+const listAllQuotes_controller_1 = require("../../controllers/quote/listAllQuotes.controller");
+const updateQuote_schema_1 = require("../../validations/quote/updateQuote.schema");
+const updateQuote_controller_1 = require("../../controllers/quote/updateQuote.controller");
+const deleteQuote_controller_1 = require("../../controllers/quote/deleteQuote.controller");
+const express_1 = require("express");
+const quoteRouter = (0, express_1.Router)();
+exports.quoteRouter = quoteRouter;
+quoteRouter.post('', loginRequired_middleware_1.loginRequired, (0, validatorData_middleware_1.validatorData)(createQuote_schema_1.createQuoteSchema), createQuote_controller_1.createQuoteController);
+quoteRouter.get('', loginRequired_middleware_1.loginRequired, listQuote_controller_1.listQuoteController);
+quoteRouter.get('/all', loginRequired_middleware_1.loginRequired, listAllQuotes_controller_1.listAllQuotesController);
+quoteRouter.patch('/:quote_id', loginRequired_middleware_1.loginRequired, (0, validatorData_middleware_1.validatorData)(updateQuote_schema_1.updateQuoteSchema), updateQuote_controller_1.updateQuoteController);
+quoteRouter.delete('/:quote_id', loginRequired_middleware_1.loginRequired, deleteQuote_controller_1.deleteQuoteController);
+//# sourceMappingURL=quote.routes.js.map
