@@ -16,35 +16,35 @@ CREATE TABLE "user" (
 );
 
 -- CreateTable
-CREATE TABLE "quotes" (
-    "quotes_id" TEXT NOT NULL,
-    "text" TEXT NOT NULL,
+CREATE TABLE "quote" (
+    "quote_id" TEXT NOT NULL,
+    "text" VARCHAR(300) NOT NULL,
     "user_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "quotes_pkey" PRIMARY KEY ("quotes_id")
+    CONSTRAINT "quote_pkey" PRIMARY KEY ("quote_id")
 );
 
 -- CreateTable
 CREATE TABLE "like" (
     "user_id" TEXT NOT NULL,
-    "quotes_id" TEXT NOT NULL,
+    "quote_id" TEXT NOT NULL,
 
-    CONSTRAINT "like_pkey" PRIMARY KEY ("user_id","quotes_id")
+    CONSTRAINT "like_pkey" PRIMARY KEY ("user_id","quote_id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "quotes_text_key" ON "quotes"("text");
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "like_user_id_key" ON "like"("user_id");
 
 -- AddForeignKey
-ALTER TABLE "quotes" ADD CONSTRAINT "quotes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "quote" ADD CONSTRAINT "quote_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "like" ADD CONSTRAINT "like_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "like" ADD CONSTRAINT "like_quotes_id_fkey" FOREIGN KEY ("quotes_id") REFERENCES "quotes"("quotes_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "like" ADD CONSTRAINT "like_quote_id_fkey" FOREIGN KEY ("quote_id") REFERENCES "quote"("quote_id") ON DELETE RESTRICT ON UPDATE CASCADE;

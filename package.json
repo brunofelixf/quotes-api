@@ -9,7 +9,7 @@
     "test:log": "cross-env NODE_ENV=test jest --verbose",
     "build": "cross-env NODE_ENV=development babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "clean": "tsc --build --clean",
-    "prod": "cross-env NODE_ENV=development node ./dist/server.js"
+    "prod": "cross-env NODE_ENV=development pm2 start ./dist/server.js"
   },
   "repository": {
     "type": "git",
