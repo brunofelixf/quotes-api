@@ -33,4 +33,4 @@ jobs:
           remote_path: /ci
           remote_host: ${{secrets.SSH_HOST}}
           remote_user: ubuntu
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          remote_key: ${{secrets.EC2_SSH_KEY}}
