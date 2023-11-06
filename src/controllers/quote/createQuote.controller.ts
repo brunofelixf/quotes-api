@@ -14,5 +14,3 @@ const createQuoteController = async (req: Request, res: Response) => {
 }
 
 export { createQuoteController }
-
-//teste
